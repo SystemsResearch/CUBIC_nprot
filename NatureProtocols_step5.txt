@@ -1,0 +1,58 @@
+#################################################
+## Parameters for step 5 of the CUBIC Analysis ##
+#################################################
+#
+#
+# Note: to avoid any problem, please do not
+#        change the file structure, only the 
+#        parameter values
+#
+#
+###########
+# Folders #
+###########
+#
+# Folder containing the NIfTI files
+/Users/perrin2/Desktop/CUBIC/nii_merged/
+#
+# Folder containing the registration files
+/Users/perrin2/Desktop/CUBIC/registration/
+#
+#
+#
+##########
+# Brains #
+##########
+#
+# List of brain IDs
+001,002,003
+#
+# Internal reference brain
+003
+#
+# Brain atlas (including full path)
+/Users/perrin2/Dropbox/Code_for_macubic_computer/atlas/atlas_rescaled.nii
+#
+#
+#
+################
+# Registration #
+################
+#
+# Registration method ("affine" or "SyN"). It should be the same as in step 4.
+affine
+#
+#
+#
+############
+# Log file #
+############
+#
+# Name of the log file (including full path)
+/Users/perrin2/Desktop/CUBIC/logs/log_NatureProtocols_step5.txt
+#
+#
+#
+#########
+## END ##
+#########

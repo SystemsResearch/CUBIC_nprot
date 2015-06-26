@@ -1,0 +1,52 @@
+#################################################
+## Parameters for step 7 of the CUBIC Analysis ##
+#################################################
+#
+#
+# Note: to avoid any problem, please do not
+#        change the file structure, only the 
+#        parameter values
+#
+#
+###########
+# Folders #
+###########
+#
+# Folder containing the NIfTI files
+/Users/perrin2/Desktop/CUBIC/nii_merged/
+#
+#
+#
+##########
+# Brains #
+##########
+#
+# List of brain IDs
+001,002,003
+#
+# Internal reference brain
+003
+#
+# Median intensity for each brain
+6064.06,5803.39,6640.76
+#
+# Control brain
+003
+#
+# Positive brain
+002
+#
+#
+#
+############
+# Log file #
+############
+#
+# Name of the log file (including full path)
+/Users/perrin2/Desktop/CUBIC/logs/log_NatureProtocols_step7.txt
+#
+#
+#
+#########
+## END ##
+#########

@@ -1,0 +1,54 @@
+#################################################
+## Parameters for step 8 of the CUBIC Analysis ##
+#################################################
+#
+#
+# Note: to avoid any problem, please do not
+#        change the file structure, only the 
+#        parameter values
+#
+#
+###########
+# Folders #
+###########
+#
+# Folder containing the raw TIFF files
+/Users/perrin2/Desktop/CUBIC/raw/
+#
+# Folder containing the NIfTI-1 files
+/Users/perrin2/Desktop/CUBIC/nii_merged/
+#
+# Folder containing the normalised TIFF files
+/Users/perrin2/Desktop/CUBIC/tiff/
+#
+#
+#
+##########
+# Brains #
+##########
+#
+# List of brain IDs (for raw TIFF stack normalisation)
+001,002,003
+#
+# Median intensity for each brain
+6064.06,5803.39,6640.76
+#
+# List of brain IDs (for NIfTI-1 to TIFF export)
+sub_003_from_002_normalised
+#
+# Number of slices for these brains to export (should be same value for all)
+169
+#
+#
+############
+# Log file #
+############
+#
+# Name of the log file (including full path)
+/Users/perrin2/Desktop/CUBIC/logs/log_NatureProtocols_step8.txt
+#
+#
+#
+#########
+## END ##
+#########

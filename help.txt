@@ -1,0 +1,168 @@
+
+***********************
+** BRIEF USER MANUAL **
+***********************
+
+
+REQUIREMENTS
+
+In the following, we assume that the required software (e.g. ImageMagick, ANTS; see manuscript for complete list) are already installed, and accessible via the command line.
+For help with a specific software, please refer to that software's website.
+We also assume that the C++ programs we provide are already compiled.
+
+For clarity, we recommend to use separate folders for each type of data.
+For instance, we usually have one external hard-drive for each dataset and use the following structure:
+- the 'raw' folder contains the TIFF stacks obtained from the microscope (one subfolder per stack).
+- the 'nii_individual' contains the NIfTI-1 files from the VD and DV directions.
+- the 'nii_merged' contains the NIfTI-1 files obtained after merging VD and DV.
+- the 'registration' folder all the data generated for registration and alignment.
+- the 'temp' folder is used for all temporary files.
+- the 'ascii' folder is used for NIfTI-1 images exported as text files.
+- the 'analysis' folder is used for image processing (e.g. when calculation the median signal intensity).
+- the 'logs' folder is used to save all log files generated during the analysis.
+- the 'tiff' folder is used to store the NIfTI-1 images exported as TIFF stacks.
+
+We recommend using a similar structure, but this can be modified in the parameter files.
+Please ensure any folder listed in these parameter files actually exists, as our methods will not attempt to create them.
+
+
+
+STEP 1: convertTiffFiles.py
+
+In this step, we convert each 2D TIFF image stack obtained from the microscope to a 3D NIfTI-1 image.
+Typically, each brain corresponds to four stacks: two channels (nuclear counterstaining and expression signal) x 2 acquisition directions (D-V and V-D).
+The script expects each stack to be stored in its own folder, which follows a specific naming rule with four fields separated by an underscore: information about the experiment (including imaging date), a unique ID for this brain, information about the imaging direction ("VD" or "DV") and information about the channel ("nuclear" for the nuclear counterstaining and "geneExp" for the signal channel). For instance, 20131118LAdV_001_nuclear_DV.
+
+To run the script, type: python convertTiffFiles.py <file>
+ where <file> is the name of the file giving all the required parameters 
+
+The script takes 11 parameters.
+An example is given in NatureProtocols_step1.txt
+Lines starting with # are comments to help understand the file structure, and are ignored by the script.
+
+For the "files" parameters, please note that:
+- in Python, the first character is at position 0.
+- the two values are separated by a comma (with no space).
+
+We recommend downscaling the samples to 25%-resolution given the limitations of current imaging processing tools, (especially registration).
+In this step, this is done by only keeping one every 4 horizontal slices ('step factor' of 4 in the parameter file) and rescaling each of these ('scaling factor' of 0.25 in the parameter file).
+Future version of this code may allow higher resolutions.
+
+
+
+STEP 2: sameBrainAlignment.py
+
+In this step, we align the DV images to the VD images of the same brain.
+The registration relies on ANTS, and a parameter is used to specify whether to use SyN or affine registration.
+
+To run the script, type: python sameBrainAlignment.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step2.txt
+Note that the list of brain IDs uses commas (with no space) to separate the IDs.
+
+
+
+STEP 3-1: edgeDetection.py
+
+In this step, we calculate the "edge content" of the horizontal slices of the DV and VD images of the same brain (using the 'aligned' image for VD, of course).
+This is used to calculate the values n and m. For convenience, the method gives results at two threshold values, 5% and 10%. We recommend using the 5% values.
+
+The results are shown in the following format:
+<slice number> <edge content VD> <edge content DV> <result at 5% threshold> <result at 10% threshold>
+
+For each slice the result is either VD, DV, or mix.
+For each pair of images, there is (usually near the middle of the brain) a region where the results change from 'VD' to 'mix', stays at 'mix' for a number of consecutive slices (typically 5-15 slices), and then changes to 'DV'. In that region, the first 'mix' gives the n value, and the last one gives the m value.
+There may be regions where 'mix' appears in between consecutive 'VD' or consecutive 'DV' (but without the change from 'VD' to 'DV'). These can be ignored.
+
+To run the script, type: python edgeDetection.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step3-1.txt
+Note that lists (of brain IDs, or number of slices) use commas (with no space) as separators.
+
+To easily find the number of slices of a NIfTI-1 file, you can open it in ITK-SNAP, or use the PrintHeader function in the command line.
+
+
+
+STEP 3-2: fileMerging.py
+
+In this step, we use the n and m values calculated above to merge the DV and VD images of the same brain into a single 3D image.
+
+To run the script, type: python fileMerging.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step3-2.txt
+Note that lists (of brain IDs, n/m values, or number of slices) use commas (with no space) as separators.
+In the lists for n and m, the values must be listed in the same order as the brain IDs.
+
+
+
+STEP 4: internalAlignment.py
+
+In this step, we register and align all merged brain images from a given dataset to one of these brains, selected as an internal reference for that dataset. This is to ensure that images can later be compared pixel by pixel.
+As for earlier registrations, a parameter specifies whether to use SyN or affine registration.
+
+To run the script, type: python internalAlignment.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step4.txt
+Note that lists use commas (with no space) as separators.
+
+
+
+STEP 5: atlasAlignment.py
+
+In this step, the internal reference brain is registered to a brain atlas, so that all samples (previously aligned to this internal reference) can now be aligned to the atlas.
+In the example files, we use the Allen Brain Atlas, but other atlases (e.g. Walxhom Space) can be used.
+As for earlier registrations, a parameter specifies whether to use SyN or affine registration.
+
+To run the script, type: python atlasAlignment.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step5.txt
+Note that lists use commas (with no space) as separators.
+
+
+
+STEP 6: median_brainOnly.py
+
+In this step, we calculate the median intensity of the signal channel (so that can later normalise the various samples). Using the atlas and the alignment performed during step 5, we make sure to only consider the pixels located inside the brain.
+
+For each sample, the output will show the total number of pixels, the number of pixels located inside the brain, and the median intensity for these pixels.
+For the first two values should be the same for all samples within a given dataset. The third value will be used in the next step.
+
+To run the script, type: python median_brainOnly.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step6.txt
+Note that lists use commas (with no space) as separators. 
+
+
+
+STEP 7: normalisation_comparison.py
+
+In this step, we normalise the samples based on the median intensities calculated at step 6, and give an example of brain to brain signal comparison.
+Depending on the dataset structure, there are of course a large number of possible comparisons. 
+
+To run the script, type: python normalisation_comparison.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step7.txt
+Note that lists use commas (with no space) as separators. 
+The median values must be listed in the same order as the brain IDs.
+
+
+
+STEP 8: exportTiffStack.py
+
+In this step, we give two examples of export. First, we normalise some of the original (raw) TIFF stacks using the median intensities (as in step 7 for the NIfTI-1 files). Then, we give an example of how to export some processed NIfTI-1 files to TIFF stacks, (for instance for visualisation with tools such as Imaris).
+
+To run the script, type: python exportTiffStack.py <file>
+ where <file> is the name of the file giving all the required parameters
+
+An example of parameter file is given in NatureProtocols_step8.txt
+Note that lists use commas (with no space) as separators. 
+The median values must be listed in the same order as the brain IDs of the raw TIFF stacks.
+
+

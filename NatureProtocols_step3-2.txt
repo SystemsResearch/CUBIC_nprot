@@ -1,0 +1,76 @@
+###################################################
+## Parameters for step 3-2 of the CUBIC Analysis ##
+###################################################
+#
+#
+# Note: to avoid any problem, please do not
+#        change the file structure, only the 
+#        parameter values
+#
+#
+###########
+# Folders #
+###########
+#
+# Folder containing the NIfTI files
+/Users/perrin2/Desktop/CUBIC/nii_individual/
+#
+# Folder containing the registration files
+/Users/perrin2/Desktop/CUBIC/ascii/
+#
+# Folder containing the merged files
+/Users/perrin2/Desktop/CUBIC/nii_merged/
+#
+# Folder containing the registration files
+/Users/perrin2/Desktop/CUBIC/registration/
+#
+#
+#
+##########
+# Brains #
+##########
+#
+# List of brain IDs
+001,002,003
+#
+# Number of sagittal slices
+640
+#
+# Number of coronal slices
+540
+#
+# Number of horizontal slices for each of these brains
+169,157,169
+#
+#
+#
+###########
+# Merging #
+###########
+#
+# n values (staining)
+88,78,83
+#
+# m values (staining)
+91,82,87
+#
+# n values (fluorescent signal)
+90,79,68
+#
+# m values (fluorescent signal)
+101,86,92
+#
+#
+#
+############
+# Log file #
+############
+#
+# Name of the log file (including full path)
+/Users/perrin2/Desktop/CUBIC/logs/log_NatureProtocols_step3-2.txt
+#
+#
+#
+#########
+## END ##
+#########

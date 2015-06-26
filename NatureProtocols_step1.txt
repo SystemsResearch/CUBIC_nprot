@@ -1,0 +1,76 @@
+#################################################
+## Parameters for step 1 of the CUBIC Analysis ##
+#################################################
+#
+#
+# Note: to avoid any problem, please do not
+#        change the file structure, only the 
+#        parameter values
+#
+#
+###########
+# Folders #
+###########
+#
+# Folder containing the raw files
+/Users/perrin2/Desktop/CUBIC/raw/
+#
+# Folder that will contain the NIfTI files
+/Users/perrin2/Desktop/CUBIC/nii_individual/
+#
+# Folder for temporary files
+/Users/perrin2/Desktop/CUBIC/temp/
+#
+#
+#
+##########
+# Images #
+##########
+#
+# Resolution of the TIFF images (XY direction, in mm)
+0.00645
+#
+# Step in the Z direction (in mm)
+0.01
+#
+#
+#
+###########
+# Scaling #
+###########
+#
+# Scaling factor (XY direction)
+0.25
+#
+# Step factor (Z direction)
+4
+#
+#
+#
+#########
+# Files #
+#########
+#
+# Position (in filename) that contains information about acquisition direction
+21,23
+#
+# Position (in filename) that contains information about brain ID
+9,12
+#
+# Position (in filename) that contains information about signal type
+13,20
+#
+#
+#
+############
+# Log file #
+############
+#
+# Name of the output file (including full path)
+/Users/perrin2/Desktop/CUBIC/logs/log_NatureProtocols_step1.txt
+#
+#
+#
+#########
+## END ##
+#########
